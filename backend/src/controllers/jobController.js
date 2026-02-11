@@ -1,6 +1,7 @@
 const prisma = require("../config/prisma");
 
-const TEST_USER_ID = "3fcc5367-c909-44ee-a3e2-1941f4e4c27c";
+// TEMP: mock authenticated user
+const MOCK_USER_ID = "3fcc5367-c909-44ee-a3e2-1941f4e4c27c";
 
 // Create Job
 exports.createJob = async (req, res) => {
@@ -9,7 +10,7 @@ exports.createJob = async (req, res) => {
       data: {
         ...req.body,
         dateApplied: new Date(req.body.dateApplied),
-        userId: "3fcc5367-c909-44ee-a3e2-1941f4e4c27c",
+        userId: MOCK_USER_ID,
       },
     });
 
@@ -20,12 +21,11 @@ exports.createJob = async (req, res) => {
   }
 };
 
-
 // Get All Jobs
 exports.getJobs = async (req, res) => {
   try {
     const jobs = await prisma.job.findMany({
-      where: { userId: TEST_USER_ID },
+      where: { userId: MOCK_USER_ID },
       orderBy: { createdAt: "desc" },
     });
 
@@ -42,8 +42,13 @@ exports.updateJob = async (req, res) => {
     const { id } = req.params;
 
     const updated = await prisma.job.update({
-      where: { id }, // ❗ removed Number()
-      data: req.body,
+      where: { id }, // UUID — no Number()
+      data: {
+        ...req.body,
+        ...(req.body.dateApplied && {
+          dateApplied: new Date(req.body.dateApplied),
+        }),
+      },
     });
 
     res.json(updated);
@@ -59,12 +64,31 @@ exports.deleteJob = async (req, res) => {
     const { id } = req.params;
 
     await prisma.job.delete({
-      where: { id }, // ❗ removed Number()
+      where: { id }, // UUID — no Number()
     });
 
     res.json({ message: "Job deleted" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to delete job" });
+  }
+};
+
+exports.getJobById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const job = await prisma.job.findUnique({
+      where: { id },
+    });
+
+    if (!job) {
+      return res.status(404).json({ error: "Job not found" });
+    }
+
+    res.json(job);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to fetch job" });
   }
 };
