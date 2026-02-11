@@ -1,8 +1,8 @@
 const prisma = require("./config/prisma");
 
 async function test() {
-  const users = await prisma.user.findMany();
-  console.log(users);
+  const jobs = await prisma.job.findMany();
+  console.log(jobs);
   process.exit();
 }
 
