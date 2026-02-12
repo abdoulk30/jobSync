@@ -12,7 +12,7 @@ function AllJobs() {
 
   return (
     <div>
-      <h1>All Jobs</h1>
+      <h1 className="page-title">All Jobs</h1>
 
       {jobs.map((job) => (
         <div key={job.id} className="job-card">

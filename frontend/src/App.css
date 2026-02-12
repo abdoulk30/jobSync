@@ -98,3 +98,38 @@ body {
   color: #94a3b8;
   margin-top: 6px;
 }
+
+.job-form {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.job-form input {
+  flex: 1;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: none;
+  background: #334155;
+  color: white;
+  outline: none;
+}
+
+.job-form input::placeholder {
+  color: #94a3b8;
+}
+
+.job-form button {
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: none;
+  background: #38bdf8;
+  color: #0f172a;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.job-form button:hover {
+  background: #0ea5e9;
+}
