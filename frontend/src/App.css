@@ -133,3 +133,17 @@ body {
 .job-form button:hover {
   background: #0ea5e9;
 }
+
+.controls {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.controls select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+}
