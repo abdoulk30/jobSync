@@ -1,17 +1,3 @@
-/* Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Make app take full screen */
 html, body, #root {
   height: 100%;
-  width: 100%;
-}
-
-/* Remove default Vite centering behavior */
-body {
-  margin: 0;
 }
