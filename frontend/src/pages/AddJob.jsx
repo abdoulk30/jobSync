@@ -110,13 +110,20 @@ function AddJob() {
           onChange={handleChange}
         />
 
-        <input
-          type="text"
-          name="jobType"
-          placeholder="Job Type (Full-time, Internship, etc.)"
-          value={formData.jobType}
-          onChange={handleChange}
-        />
+        <select
+            name="jobType"
+            value={formData.jobType}
+            onChange={handleChange}
+            >
+            <option value="">Select Job Type</option>
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Internship">Internship</option>
+            <option value="Contract">Contract</option>
+            <option value="Temporary">Temporary</option>
+            <option value="Freelance">Freelance</option>
+            <option value="Other">Other</option>
+        </select>
 
         <button type="submit">Add Job</button>
       </form>

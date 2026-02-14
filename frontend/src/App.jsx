@@ -3,6 +3,7 @@ import Dashboard from "./pages/Dashboard";
 import AllJobs from "./pages/AllJobs";
 import AddJob from "./pages/AddJob";
 import Favorites from "./pages/Favorites";
+import JobDetails from "./pages/JobDetails";
 import "./App.css";
 
 function App() {
@@ -13,8 +14,8 @@ function App() {
           <h2 className="logo">JobSync</h2>
           <div className="nav-links">
             <Link to="/">Dashboard</Link>
+            <Link to="/add">Add Job</Link>
             <Link to="/jobs">All Jobs</Link>
-            <Link to="/add-job">Add Job</Link>
             <Link to="/favorites">Favorites</Link>
           </div>
         </nav>
@@ -22,9 +23,10 @@ function App() {
         <div className="page-content">
           <Routes>
             <Route path="/" element={<Dashboard />} />
+            <Route path="/add" element={<AddJob />} />
             <Route path="/jobs" element={<AllJobs />} />
-            <Route path="/add-job" element={<AddJob />} />
             <Route path="/favorites" element={<Favorites />} />
+            <Route path="/jobs/:id" element={<JobDetails />} />
           </Routes>
         </div>
       </div>
