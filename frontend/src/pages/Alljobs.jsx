@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 function AllJobs() {
@@ -6,6 +6,7 @@ function AllJobs() {
   const [statusFilter, setStatusFilter] = useState("All");
   const [typeFilter, setTypeFilter] = useState("All");
   const [sortOption, setSortOption] = useState("Newest");
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,13 +22,10 @@ function AllJobs() {
   const handleStatusChange = async (id, newStatus) => {
     await fetch(`http://localhost:5000/api/jobs/${id}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ applicationStatus: newStatus }),
     });
 
-    // Update UI immediately
     setJobs((prevJobs) =>
       prevJobs.map((job) =>
         job.id === id ? { ...job, applicationStatus: newStatus } : job
@@ -35,50 +33,87 @@ function AllJobs() {
     );
   };
 
-  // 🔥 Filtering + Sorting Logic
-  let filteredJobs = [...jobs];
+  const clearFilters = () => {
+    setStatusFilter("All");
+    setTypeFilter("All");
+    setSortOption("Newest");
+    setSearchTerm("");
+  };
 
-  // Filter by status
-  if (statusFilter !== "All") {
-    filteredJobs = filteredJobs.filter(
-      (job) => job.applicationStatus === statusFilter
-    );
-  }
+  // Highlight matching text
+  const highlightText = (text) => {
+    if (!searchTerm.trim()) return text;
 
-  // Filter by job type
-  if (typeFilter !== "All") {
-    filteredJobs = filteredJobs.filter(
-      (job) => job.jobType === typeFilter
-    );
-  }
+    const regex = new RegExp(`(${searchTerm})`, "gi");
+    const parts = text.split(regex);
 
-  // Sorting
-  if (sortOption === "Newest") {
-    filteredJobs.sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    return parts.map((part, index) =>
+      part.toLowerCase() === searchTerm.toLowerCase() ? (
+        <span key={index} className="highlight">
+          {part}
+        </span>
+      ) : (
+        part
+      )
     );
-  } else if (sortOption === "Oldest") {
-    filteredJobs.sort(
-      (a, b) => new Date(a.createdAt) - new Date(b.createdAt)
-    );
-  } else if (sortOption === "Company A-Z") {
-    filteredJobs.sort((a, b) =>
-      a.company.localeCompare(b.company)
-    );
-  } else if (sortOption === "Company Z-A") {
-    filteredJobs.sort((a, b) =>
-      b.company.localeCompare(a.company)
-    );
-  }
+  };
+
+  const filteredJobs = useMemo(() => {
+    let filtered = [...jobs];
+
+    if (searchTerm.trim() !== "") {
+      filtered = filtered.filter((job) =>
+        `${job.company} ${job.jobTitle}`
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase())
+      );
+    }
+
+    if (statusFilter !== "All") {
+      filtered = filtered.filter(
+        (job) => job.applicationStatus === statusFilter
+      );
+    }
+
+    if (typeFilter !== "All") {
+      filtered = filtered.filter((job) => job.jobType === typeFilter);
+    }
+
+    if (sortOption === "Newest") {
+      filtered.sort(
+        (a, b) => new Date(b.dateApplied) - new Date(a.dateApplied)
+      );
+    } else if (sortOption === "Oldest") {
+      filtered.sort(
+        (a, b) => new Date(a.dateApplied) - new Date(b.dateApplied)
+      );
+    } else if (sortOption === "Company A-Z") {
+      filtered.sort((a, b) => a.company.localeCompare(b.company));
+    } else if (sortOption === "Company Z-A") {
+      filtered.sort((a, b) => b.company.localeCompare(a.company));
+    }
+
+    return filtered;
+  }, [jobs, statusFilter, typeFilter, sortOption, searchTerm]);
 
   return (
     <div>
       <h1 className="page-title">All Jobs</h1>
 
-      {/* Filters */}
+      {/* SEARCH */}
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search by company or title..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-input"
+        />
+      </div>
+
+      {/* FILTERS */}
       <div className="filters-container">
         <div className="filters">
-
           <div className="filter-group">
             <label>Status</label>
             <select
@@ -123,43 +158,65 @@ function AllJobs() {
             </select>
           </div>
 
+          <button className="clear-btn" onClick={clearFilters}>
+            Clear Filters
+          </button>
         </div>
       </div>
 
-      {/* Jobs Grid */}
-      <div className="jobs-grid">
-        {filteredJobs.map((job) => (
-          <div
-            key={job.id}
-            className="job-card"
-            onClick={() => navigate(`/jobs/${job.id}`)}
-            style={{ cursor: "pointer" }}
-          >
-            <div className="job-company">{job.company}</div>
-            <div className="job-title">{job.jobTitle}</div>
-
-            <div
-              className={`status-badge ${job.applicationStatus.toLowerCase()}`}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <select
-                value={job.applicationStatus}
-                onClick={(e) => e.stopPropagation()}
-                onChange={(e) => {
-                  e.stopPropagation();
-                  handleStatusChange(job.id, e.target.value);
-                }}
-                className="status-dropdown"
-              >
-                <option value="Applied">Applied</option>
-                <option value="Interviewing">Interviewing</option>
-                <option value="Offer">Offer</option>
-                <option value="Rejected">Rejected</option>
-              </select>
-            </div>
-          </div>
-        ))}
+      <div className="job-count">
+        {filteredJobs.length}{" "}
+        {filteredJobs.length === 1 ? "Job" : "Jobs"} Found
       </div>
+
+      {/* EMPTY STATE */}
+      {filteredJobs.length === 0 ? (
+        <div className="empty-state">
+          <h3>No jobs found</h3>
+          <p>Try adjusting your filters or search terms.</p>
+          <button onClick={clearFilters} className="primary">
+            Reset Filters
+          </button>
+        </div>
+      ) : (
+        <div className="jobs-grid">
+          {filteredJobs.map((job) => (
+            <div
+              key={job.id}
+              className="job-card animate-in"
+              onClick={() => navigate(`/jobs/${job.id}`)}
+              style={{ cursor: "pointer" }}
+            >
+              <div className="job-company">
+                {highlightText(job.company)}
+              </div>
+              <div className="job-title">
+                {highlightText(job.jobTitle)}
+              </div>
+
+              <div
+                className={`status-badge ${job.applicationStatus.toLowerCase()}`}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <select
+                  value={job.applicationStatus}
+                  onClick={(e) => e.stopPropagation()}
+                  onChange={(e) => {
+                    e.stopPropagation();
+                    handleStatusChange(job.id, e.target.value);
+                  }}
+                  className="status-dropdown"
+                >
+                  <option value="Applied">Applied</option>
+                  <option value="Interviewing">Interviewing</option>
+                  <option value="Offer">Offer</option>
+                  <option value="Rejected">Rejected</option>
+                </select>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
