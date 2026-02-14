@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import AllJobs from "./pages/AllJobs";
+import AddJob from "./pages/AddJob";
 import Favorites from "./pages/Favorites";
 import "./App.css";
 
@@ -13,6 +14,7 @@ function App() {
           <div className="nav-links">
             <Link to="/">Dashboard</Link>
             <Link to="/jobs">All Jobs</Link>
+            <Link to="/add-job">Add Job</Link>
             <Link to="/favorites">Favorites</Link>
           </div>
         </nav>
@@ -21,6 +23,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/jobs" element={<AllJobs />} />
+            <Route path="/add-job" element={<AddJob />} />
             <Route path="/favorites" element={<Favorites />} />
           </Routes>
         </div>

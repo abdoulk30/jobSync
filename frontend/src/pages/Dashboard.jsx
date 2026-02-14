@@ -1,81 +1,74 @@
 import { useEffect, useState } from "react";
 
 function Dashboard() {
-  const [jobs, setJobs] = useState([]);
-  const [formData, setFormData] = useState({
-    company: "",
-    jobTitle: "",
+  const [stats, setStats] = useState({
+    total: 0,
+    applied: 0,
+    interviewing: 0,
+    offer: 0,
+    rejected: 0,
   });
 
   useEffect(() => {
-    fetchJobs();
-  }, []);
-
-  const fetchJobs = () => {
     fetch("http://localhost:5000/api/jobs")
       .then((res) => res.json())
-      .then((data) => setJobs(data.slice(0, 4)));
-  };
+      .then((jobs) => {
+        const applied = jobs.filter(
+          (job) => job.applicationStatus === "Applied"
+        ).length;
 
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
+        const interviewing = jobs.filter(
+          (job) => job.applicationStatus === "Interviewing"
+        ).length;
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+        const offer = jobs.filter(
+          (job) => job.applicationStatus === "Offer"
+        ).length;
 
-    await fetch("http://localhost:5000/api/jobs", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...formData,
-        applicationStatus: "Applied",
-        dateApplied: new Date().toISOString(),
-      }),
-    });
+        const rejected = jobs.filter(
+          (job) => job.applicationStatus === "Rejected"
+        ).length;
 
-    setFormData({ company: "", jobTitle: "" });
-    fetchJobs();
-  };
+        setStats({
+          total: jobs.length,
+          applied,
+          interviewing,
+          offer,
+          rejected,
+        });
+      });
+  }, []);
 
   return (
-    <div>
+    <div className="dashboard-page">
       <h1 className="page-title">Dashboard</h1>
 
-      {/* Add Job Form */}
-      <form className="job-form" onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="company"
-          placeholder="Company"
-          value={formData.company}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="jobTitle"
-          placeholder="Job Title"
-          value={formData.jobTitle}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">Add Job</button>
-      </form>
-
-      <h2 className="section-title">Recent Jobs</h2>
-
-      {jobs.map((job) => (
-        <div key={job.id} className="job-card">
-          <div className="job-company">{job.company}</div>
-          <div className="job-title">{job.jobTitle}</div>
+      <div className="stats-grid">
+        <div className="stat-card">
+          <h3>Total Applications</h3>
+          <p>{stats.total}</p>
         </div>
-      ))}
+
+        <div className="stat-card">
+          <h3>Applied</h3>
+          <p>{stats.applied}</p>
+        </div>
+
+        <div className="stat-card">
+          <h3>Interviewing</h3>
+          <p>{stats.interviewing}</p>
+        </div>
+
+        <div className="stat-card">
+          <h3>Offers</h3>
+          <p>{stats.offer}</p>
+        </div>
+
+        <div className="stat-card">
+          <h3>Rejected</h3>
+          <p>{stats.rejected}</p>
+        </div>
+      </div>
     </div>
   );
 }
