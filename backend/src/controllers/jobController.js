@@ -1,7 +1,6 @@
 const prisma = require("../config/prisma");
 
-// TEMP: mock authenticated user
-const MOCK_USER_ID = "3fcc5367-c909-44ee-a3e2-1941f4e4c27c";
+
 
 // Create Job
 exports.createJob = async (req, res) => {
@@ -10,7 +9,7 @@ exports.createJob = async (req, res) => {
       data: {
         ...req.body,
         dateApplied: new Date(req.body.dateApplied),
-        userId: MOCK_USER_ID,
+        userId: req.userId,
       },
     });
 
@@ -25,7 +24,7 @@ exports.createJob = async (req, res) => {
 exports.getJobs = async (req, res) => {
   try {
     const jobs = await prisma.job.findMany({
-      where: { userId: MOCK_USER_ID },
+      where: { userId: req.userId },
       orderBy: { createdAt: "desc" },
     });
 
