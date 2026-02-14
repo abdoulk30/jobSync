@@ -371,6 +371,17 @@ button.danger {
   margin-bottom: 30px;
 }
 
+.details-card a {
+  color: #60a5fa;        /* clean blue */
+  text-decoration: none; /* remove underline */
+  font-weight: 500;
+  transition: 0.2s ease;
+}
+
+.details-card a:hover {
+  text-decoration: underline;
+}
+
 .label {
   font-size: 12px;
   color: #888;
@@ -447,4 +458,74 @@ button.secondary {
 button.secondary:hover {
   background: #334155;
   color: white;
+}
+
+.filters {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.filters select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #1e293b;
+  color: white;
+  border: 1px solid #334155;
+}
+
+/* FILTER CONTAINER */
+.filters-container {
+  margin-bottom: 35px;
+  display: flex;
+  justify-content: center;
+}
+
+/* FILTER ROW */
+.filters {
+  display: flex;
+  gap: 25px;
+  flex-wrap: wrap;
+  background: #1e293b;
+  padding: 20px 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+/* INDIVIDUAL GROUP */
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* LABEL */
+.filter-group label {
+  font-size: 13px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* SELECT */
+.filter-group select {
+  background: #0f172a;
+  color: white;
+  border: 1px solid #334155;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: 0.2s ease;
+  cursor: pointer;
+}
+
+/* HOVER */
+.filter-group select:hover {
+  border-color: #3b82f6;
+}
+
+/* FOCUS */
+.filter-group select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
 }
