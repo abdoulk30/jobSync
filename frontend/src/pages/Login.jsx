@@ -5,55 +5,75 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
 
-    const res = await fetch("http://localhost:5000/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+        const res = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+        });
 
-    const data = await res.json();
+        const data = await res.json();
 
-    if (res.ok) {
-      localStorage.setItem("token", data.token);
-      navigate("/");
-    } else {
-      alert(data.message);
+        if (res.ok) {
+        localStorage.setItem("token", data.token);
+        navigate("/");
+        } else {
+        setError(data.message || "Invalid email or password");
+        }
+    } catch (err) {
+        setError("Something went wrong. Please try again.");
+    } finally {
+        setLoading(false);
     }
-  };
+};
+
+
 
   return (
-  <div className="auth-page">
-    <div className="auth-card">
-      <h2 className="auth-title">Welcome Back</h2>
+    <div className="auth-page">
+        <div className="auth-card">
+        <h2 className="auth-title">Welcome Back</h2>
 
-      <form onSubmit={handleLogin} className="auth-form">
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+        <form onSubmit={handleLogin} className="auth-form">
+            <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="email"
+            required
+            />
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+            <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            autoComplete="current-password"
+            required
+            />
 
-        <button type="submit">Login</button>
-      </form>
+            <button type="submit" disabled={loading} className="auth-btn">
+                {loading ? "Logging in..." : "Login"}
+            </button>
 
-      <div className="auth-footer">
-        Don’t have an account? <Link to="/register">Register</Link>
-      </div>
+            {error && <div className="auth-error">{error}</div>}
+        </form>
+
+        <div className="auth-footer">
+            Don’t have an account? <Link to="/register">Register</Link>
+        </div>
+        </div>
     </div>
-  </div>
 );
 }

@@ -665,6 +665,18 @@ button.secondary:hover {
   width: 100%; /* Forces the form to fill the wider card */
 }
 
+.auth-error {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid #ef4444;
+  color: #f87171;
+  font-size: 14px;
+  text-align: center;
+}
+
+
 .auth-group {
   display: flex;
   flex-direction: column;
@@ -757,4 +769,10 @@ button.secondary:hover {
 .logout-btn:hover {
   background: #dc2626;
   transform: translateY(-2px);
+}
+
+.auth-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
