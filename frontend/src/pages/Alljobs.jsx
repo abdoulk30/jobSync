@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { authFetch } from "../services/api"; // ✅ import this
 
 function AllJobs() {
   const [jobs, setJobs] = useState([]);
@@ -13,16 +14,15 @@ function AllJobs() {
     fetchJobs();
   }, []);
 
-  const fetchJobs = () => {
-    fetch("http://localhost:5000/api/jobs")
-      .then((res) => res.json())
-      .then((data) => setJobs(data));
+  const fetchJobs = async () => {
+    const res = await authFetch("/api/jobs"); // ✅ changed
+    const data = await res.json();
+    setJobs(data);
   };
 
   const handleStatusChange = async (id, newStatus) => {
-    await fetch(`http://localhost:5000/api/jobs/${id}`, {
+    await authFetch(`/api/jobs/${id}`, {  // ✅ changed
       method: "PUT",
-      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ applicationStatus: newStatus }),
     });
 
@@ -40,7 +40,6 @@ function AllJobs() {
     setSearchTerm("");
   };
 
-  // Highlight matching text
   const highlightText = (text) => {
     if (!searchTerm.trim()) return text;
 

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { authFetch } from "../services/api";
 
 function Dashboard() {
   const [stats, setStats] = useState({
@@ -10,33 +11,36 @@ function Dashboard() {
   });
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/jobs")
-      .then((res) => res.json())
-      .then((jobs) => {
-        const applied = jobs.filter(
-          (job) => job.applicationStatus === "Applied"
-        ).length;
+    const fetchJobs = async () => {
+      const res = await authFetch("/api/jobs"); // ✅ ONLY relative path
+      const jobs = await res.json();
 
-        const interviewing = jobs.filter(
-          (job) => job.applicationStatus === "Interviewing"
-        ).length;
+      const applied = jobs.filter(
+        (job) => job.applicationStatus === "Applied"
+      ).length;
 
-        const offer = jobs.filter(
-          (job) => job.applicationStatus === "Offer"
-        ).length;
+      const interviewing = jobs.filter(
+        (job) => job.applicationStatus === "Interviewing"
+      ).length;
 
-        const rejected = jobs.filter(
-          (job) => job.applicationStatus === "Rejected"
-        ).length;
+      const offer = jobs.filter(
+        (job) => job.applicationStatus === "Offer"
+      ).length;
 
-        setStats({
-          total: jobs.length,
-          applied,
-          interviewing,
-          offer,
-          rejected,
-        });
+      const rejected = jobs.filter(
+        (job) => job.applicationStatus === "Rejected"
+      ).length;
+
+      setStats({
+        total: jobs.length,
+        applied,
+        interviewing,
+        offer,
+        rejected,
       });
+    };
+
+    fetchJobs();
   }, []);
 
   return (

@@ -19,12 +19,12 @@ body {
   align-items: center;
 }
 
+
 /* Navbar */
 .navbar {
   width: 100%;
   max-width: 1100px;
-  margin-top: 40px;
-  padding: 20px 30px;
+  padding: 40px 30px 20px 30px; /* top padding instead of margin */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -622,4 +622,116 @@ button.secondary:hover {
 .empty-state p {
   margin-bottom: 20px;
   color: #94a3b8;
+}
+
+/* AUTH PAGES */
+
+.auth-page {
+  /* This ensures the page takes up all vertical space and centers the card */
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 40px 20px;
+}
+
+.auth-card {
+  /* Takes up 90% of the view, but won't go wider than 800px */
+  width: 90%;
+  max-width: 800px; 
+  padding: 60px 50px; 
+  border-radius: 20px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.auth-title {
+  text-align: center;
+  font-size: 32px; /* Slightly larger to match wider card */
+  font-weight: 700;
+  margin-bottom: 35px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  width: 100%; /* Forces the form to fill the wider card */
+}
+
+.auth-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.auth-group label {
+  font-size: 13px;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.auth-form input {
+  width: 100%; /* Ensures inputs stretch to the new card width */
+  padding: 14px 16px;
+  border-radius: 10px;
+  border: 1px solid #334155;
+  background: #0f172a;
+  color: white;
+  font-size: 15px;
+  transition: 0.2s ease;
+}
+
+.auth-form input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+/* Fixed Buttons - Merging your original styles */
+.auth-btn, .auth-form button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 14px;
+  border-radius: 10px;
+  border: none;
+  background: #3b82f6;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.auth-btn:hover, .auth-form button:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+}
+
+.auth-footer {
+  margin-top: 25px;
+  text-align: center;
+  font-size: 14px;
+  color: #94a3b8;
+}
+
+.auth-footer a {
+  color: #60a5fa;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}
+
+.auth-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  width: 60%;
 }

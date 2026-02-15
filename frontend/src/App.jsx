@@ -1,37 +1,106 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  useLocation,
+} from "react-router-dom";
+
 import Dashboard from "./pages/Dashboard";
 import AllJobs from "./pages/AllJobs";
 import AddJob from "./pages/AddJob";
 import Favorites from "./pages/Favorites";
 import JobDetails from "./pages/JobDetails";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 import "./App.css";
 
-function App() {
-  return (
-    <Router>
-      <div className="app-container">
-        <nav className="navbar">
-          <h2 className="logo">JobSync</h2>
-          <div className="nav-links">
-            <Link to="/">Dashboard</Link>
-            <Link to="/add">Add Job</Link>
-            <Link to="/jobs">All Jobs</Link>
-            <Link to="/favorites">Favorites</Link>
-          </div>
-        </nav>
+function AppContent() {
+  const isLoggedIn = !!localStorage.getItem("token");
+  const location = useLocation();
 
-        <div className="page-content">
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/add" element={<AddJob />} />
-            <Route path="/jobs" element={<AllJobs />} />
-            <Route path="/favorites" element={<Favorites />} />
-            <Route path="/jobs/:id" element={<JobDetails />} />
-          </Routes>
+  const isAuthPage =
+    location.pathname === "/login" ||
+    location.pathname === "/register";
+
+  return (
+    <div className="app-container">
+      <nav className="navbar">
+        <h2 className="logo">JobSync</h2>
+
+        <div className="nav-links">
+          {!isAuthPage && isLoggedIn && (
+            <>
+              <Link to="/">Dashboard</Link>
+              <Link to="/add">Add Job</Link>
+              <Link to="/jobs">All Jobs</Link>
+              <Link to="/favorites">Favorites</Link>
+            </>
+          )}
         </div>
+      </nav>
+
+      <div className={isAuthPage ? "auth-wrapper" : "page-content"}>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/add"
+            element={
+              <ProtectedRoute>
+                <AddJob />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/jobs"
+            element={
+              <ProtectedRoute>
+                <AllJobs />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/favorites"
+            element={
+              <ProtectedRoute>
+                <Favorites />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/jobs/:id"
+            element={
+              <ProtectedRoute>
+                <JobDetails />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
       </div>
-    </Router>
+    </div>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <Router>
+      <AppContent />
+    </Router>
+  );
+}
