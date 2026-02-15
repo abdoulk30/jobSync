@@ -1,11 +1,5 @@
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Link,
-  useLocation,
-} from "react-router-dom";
-
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
 import Dashboard from "./pages/Dashboard";
 import AllJobs from "./pages/AllJobs";
 import AddJob from "./pages/AddJob";
@@ -14,35 +8,48 @@ import JobDetails from "./pages/JobDetails";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute";
-
 import "./App.css";
 
 function AppContent() {
-  const isLoggedIn = !!localStorage.getItem("token");
+  const navigate = useNavigate();
   const location = useLocation();
 
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+
   const isAuthPage =
-    location.pathname === "/login" ||
-    location.pathname === "/register";
+    location.pathname === "/login" || location.pathname === "/register";
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    navigate("/login");
+  };
+
+  useEffect(() => {
+    setIsLoggedIn(!!localStorage.getItem("token"));
+  }, [location]);
 
   return (
     <div className="app-container">
-      <nav className="navbar">
-        <h2 className="logo">JobSync</h2>
+      {!isAuthPage && (
+        <nav className="navbar">
+          <h2 className="logo">JobSync</h2>
 
-        <div className="nav-links">
-          {!isAuthPage && isLoggedIn && (
-            <>
+          {isLoggedIn && (
+            <div className="nav-links">
               <Link to="/">Dashboard</Link>
               <Link to="/add">Add Job</Link>
               <Link to="/jobs">All Jobs</Link>
               <Link to="/favorites">Favorites</Link>
-            </>
+              <button onClick={handleLogout} className="logout-btn">
+                Logout
+              </button>
+            </div>
           )}
-        </div>
-      </nav>
+        </nav>
+      )}
 
-      <div className={isAuthPage ? "auth-wrapper" : "page-content"}>
+      <div className="page-content">
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -55,7 +62,6 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/add"
             element={
@@ -64,7 +70,6 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/jobs"
             element={
@@ -73,7 +78,6 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/favorites"
             element={
@@ -82,7 +86,6 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
-
           <Route
             path="/jobs/:id"
             element={
@@ -97,10 +100,12 @@ function AppContent() {
   );
 }
 
-export default function App() {
+function App() {
   return (
     <Router>
       <AppContent />
     </Router>
   );
 }
+
+export default App;

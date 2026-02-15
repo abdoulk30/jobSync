@@ -17,27 +17,31 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
 }
 
 
 /* Navbar */
 .navbar {
   width: 100%;
-  max-width: 1100px;
-  padding: 40px 30px 20px 30px; /* top padding instead of margin */
+  max-width: 1400px; 
+  padding: 40px 30px 20px 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .logo {
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 28px; 
+  font-weight: 800; 
+  color: #f1f5f9;
 }
 
 .nav-links {
   display: flex;
-  gap: 30px;
+  align-items: center;
+  gap: 30px; 
+  justify-content: flex-end; 
 }
 
 .nav-links a {
@@ -734,4 +738,23 @@ button.secondary:hover {
   align-items: center;
   padding: 20px;
   width: 60%;
+}
+
+/* Logout Button */
+.logout-btn {
+  background: #ef4444; 
+  border: none;
+  color: white;
+  padding: 10px 20px; /* Slightly larger button */
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: 0.2s ease;
+  margin-left: 20px; 
+}
+
+.logout-btn:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
 }
