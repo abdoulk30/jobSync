@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { authFetch } from "../services/api";
 
 function AddJob() {
   const navigate = useNavigate();
@@ -26,15 +27,23 @@ function AddJob() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await fetch("http://localhost:5000/api/jobs", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
+    try {
+      const res = await authFetch("/api/jobs", {
+        method: "POST",
+        body: JSON.stringify(formData),
+      });
 
-    navigate("/jobs");
+      if (!res.ok) {
+        const data = await res.json();
+        alert(data.message || "Failed to add job");
+        return;
+      }
+
+      navigate("/jobs");
+    } catch (err) {
+      console.error("Error adding job:", err);
+      alert("Something went wrong.");
+    }
   };
 
   return (
@@ -111,18 +120,18 @@ function AddJob() {
         />
 
         <select
-            name="jobType"
-            value={formData.jobType}
-            onChange={handleChange}
-            >
-            <option value="">Select Job Type</option>
-            <option value="Full-time">Full-time</option>
-            <option value="Part-time">Part-time</option>
-            <option value="Internship">Internship</option>
-            <option value="Contract">Contract</option>
-            <option value="Temporary">Temporary</option>
-            <option value="Freelance">Freelance</option>
-            <option value="Other">Other</option>
+          name="jobType"
+          value={formData.jobType}
+          onChange={handleChange}
+        >
+          <option value="">Select Job Type</option>
+          <option value="Full-time">Full-time</option>
+          <option value="Part-time">Part-time</option>
+          <option value="Internship">Internship</option>
+          <option value="Contract">Contract</option>
+          <option value="Temporary">Temporary</option>
+          <option value="Freelance">Freelance</option>
+          <option value="Other">Other</option>
         </select>
 
         <button type="submit">Add Job</button>
@@ -132,4 +141,3 @@ function AddJob() {
 }
 
 export default AddJob;
-

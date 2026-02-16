@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { authFetch } from "../services/api";
 
 function JobDetails() {
   const { id } = useParams();
@@ -10,7 +11,7 @@ function JobDetails() {
   const [formData, setFormData] = useState({});
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/jobs/${id}`)
+    authFetch(`/api/jobs/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setJob(data);
@@ -32,7 +33,7 @@ function JobDetails() {
   };
 
   const handleSave = async () => {
-    await fetch(`http://localhost:5000/api/jobs/${id}`, {
+    await authFetch(`/api/jobs/${id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -45,15 +46,13 @@ function JobDetails() {
 
     setEditMode(false);
 
-    const updated = await fetch(
-      `http://localhost:5000/api/jobs/${id}`
-    );
+    const updated = await authFetch(`/api/jobs/${id}`);
     const data = await updated.json();
     setJob(data);
   };
 
   const handleDelete = async () => {
-    await fetch(`http://localhost:5000/api/jobs/${id}`, {
+    await authFetch(`/api/jobs/${id}`, {
       method: "DELETE",
     });
 
@@ -106,6 +105,13 @@ function JobDetails() {
             onClick={handleDelete}
           >
             Delete
+          </button>
+
+          <button
+            className="secondary"
+            onClick={() => navigate(-1)}
+          >
+           Back
           </button>
         </div>
       </div>

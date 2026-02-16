@@ -1,7 +1,6 @@
 const prisma = require("../config/prisma");
 
 
-
 // Create Job
 exports.createJob = async (req, res) => {
   try {
@@ -40,8 +39,8 @@ exports.updateJob = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const updated = await prisma.job.update({
-      where: { id }, // UUID — no Number()
+    const updated = await prisma.job.updateMany({
+      where: { id, userId: req.userId },
       data: {
         ...req.body,
         ...(req.body.dateApplied && {
@@ -50,7 +49,11 @@ exports.updateJob = async (req, res) => {
       },
     });
 
-    res.json(updated);
+    if (updated.count === 0) {
+      return res.status(404).json({ error: "Job not found" });
+    }
+
+    res.json({ message: "Job updated" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Failed to update job" });
@@ -62,9 +65,13 @@ exports.deleteJob = async (req, res) => {
   try {
     const { id } = req.params;
 
-    await prisma.job.delete({
-      where: { id }, // UUID — no Number()
+    const deleted = await prisma.job.deleteMany({
+      where: { id, userId: req.userId },
     });
+
+    if (deleted.count === 0) {
+      return res.status(404).json({ error: "Job not found" });
+    }
 
     res.json({ message: "Job deleted" });
   } catch (error) {
@@ -77,8 +84,8 @@ exports.getJobById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const job = await prisma.job.findUnique({
-      where: { id },
+    const job = await prisma.job.findFirst({
+      where: { id, userId: req.userId },
     });
 
     if (!job) {

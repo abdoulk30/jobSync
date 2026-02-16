@@ -31,23 +31,23 @@ function AppContent() {
 
   return (
     <div className="app-container">
-      {!isAuthPage && (
-        <nav className="navbar">
-          <h2 className="logo">JobSync</h2>
+      {/* The navbar now always renders so the Logo is visible */}
+      <nav className="navbar">
+        <h2 className="logo">JobSync</h2>
 
-          {isLoggedIn && (
-            <div className="nav-links">
-              <Link to="/">Dashboard</Link>
-              <Link to="/add">Add Job</Link>
-              <Link to="/jobs">All Jobs</Link>
-              <Link to="/favorites">Favorites</Link>
-              <button onClick={handleLogout} className="logout-btn">
-                Logout
-              </button>
-            </div>
-          )}
-        </nav>
-      )}
+        {/* Links only appear if logged in and NOT on a login/register page */}
+        {isLoggedIn && !isAuthPage && (
+          <div className="nav-links">
+            <Link to="/">Dashboard</Link>
+            <Link to="/add">Add Job</Link>
+            <Link to="/jobs">All Jobs</Link>
+            <Link to="/favorites">Favorites</Link>
+            <button onClick={handleLogout} className="logout-btn">
+              Logout
+            </button>
+          </div>
+        )}
+      </nav>
 
       <div className="page-content">
         <Routes>
