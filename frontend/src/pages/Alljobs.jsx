@@ -1,24 +1,55 @@
 import { useEffect, useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { authFetch } from "../services/api";
 
 function AllJobs() {
   const [jobs, setJobs] = useState([]);
-  const [statusFilter, setStatusFilter] = useState("All");
-  const [typeFilter, setTypeFilter] = useState("All");
-  const [sortOption, setSortOption] = useState("Newest");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchParams] = useSearchParams();
+
+  const [statusFilter, setStatusFilter] = useState(
+    searchParams.get("status") || "All"
+  );
+  const [typeFilter, setTypeFilter] = useState(
+    searchParams.get("type") || "All"
+  );
+  const [sortOption, setSortOption] = useState(
+    searchParams.get("sort") || "Newest"
+  );
+  const [searchTerm, setSearchTerm] = useState(
+    searchParams.get("search") || ""
+  );
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const navigate = useNavigate();
 
+  // ✅ SINGLE fetchJobs function
+  const fetchJobs = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const res = await authFetch("/api/jobs");
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch jobs");
+      }
+
+      const data = await res.json();
+      setJobs(data);
+    } catch (err) {
+      console.error("Fetch jobs error:", err);
+      setError("Something went wrong while loading jobs.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ✅ Proper useEffect
   useEffect(() => {
     fetchJobs();
   }, []);
-
-  const fetchJobs = async () => {
-    const res = await authFetch("/api/jobs");
-    const data = await res.json();
-    setJobs(data);
-  };
 
   const handleStatusChange = async (id, newStatus) => {
     await authFetch(`/api/jobs/${id}`, {
@@ -179,70 +210,90 @@ function AllJobs() {
         </div>
       </div>
 
-      <div className="job-count">
-        {filteredJobs.length}{" "}
-        {filteredJobs.length === 1 ? "Job" : "Jobs"} Found
-      </div>
-
-      {filteredJobs.length === 0 ? (
+      {loading && (
         <div className="empty-state">
-          <h3>No jobs found</h3>
-          <p>Try adjusting your filters or search terms.</p>
-          <button onClick={clearFilters} className="primary">
-            Reset Filters
+          <h3>Loading jobs...</h3>
+        </div>
+      )}
+
+      {error && (
+        <div className="empty-state error-state">
+          <h3>Something went wrong</h3>
+          <p>{error}</p>
+          <button className="primary" onClick={fetchJobs}>
+            Retry
           </button>
         </div>
-      ) : (
-        <div className="jobs-grid">
-          {filteredJobs.map((job) => (
-            <div
-              key={job.id}
-              className="job-card animate-in"
-              onClick={() => navigate(`/jobs/${job.id}`)}
-              style={{ cursor: "pointer", position: "relative" }}
-            >
-              <div
-                className={`favorite-star ${
-                  job.isFavorite ? "favorited" : ""
-                }`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleFavorite(job.id);
-                }}
-              >
-                ★
-              </div>
+      )}
 
-              <div className="job-company">
-                {highlightText(job.company)}
-              </div>
+      {!loading && !error && (
+        <>
+          <div className="job-count">
+            {filteredJobs.length}{" "}
+            {filteredJobs.length === 1 ? "Job" : "Jobs"} Found
+          </div>
 
-              <div className="job-title">
-                {highlightText(job.jobTitle)}
-              </div>
-
-              <div
-                className={`status-badge ${job.applicationStatus.toLowerCase()}`}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <select
-                  value={job.applicationStatus}
-                  onClick={(e) => e.stopPropagation()}
-                  onChange={(e) => {
-                    e.stopPropagation();
-                    handleStatusChange(job.id, e.target.value);
-                  }}
-                  className="status-dropdown"
-                >
-                  <option value="Applied">Applied</option>
-                  <option value="Interviewing">Interviewing</option>
-                  <option value="Offer">Offer</option>
-                  <option value="Rejected">Rejected</option>
-                </select>
-              </div>
+          {filteredJobs.length === 0 ? (
+            <div className="empty-state">
+              <h3>No jobs found</h3>
+              <p>Try adjusting your filters or search terms.</p>
+              <button onClick={clearFilters} className="primary">
+                Reset Filters
+              </button>
             </div>
-          ))}
-        </div>
+          ) : (
+            <div className="jobs-grid">
+              {filteredJobs.map((job) => (
+                <div
+                  key={job.id}
+                  className="job-card animate-in"
+                  onClick={() => navigate(`/jobs/${job.id}`)}
+                  style={{ cursor: "pointer", position: "relative" }}
+                >
+                  <div
+                    className={`favorite-star ${
+                      job.isFavorite ? "favorited" : ""
+                    }`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleFavorite(job.id);
+                    }}
+                  >
+                    ★
+                  </div>
+
+                  <div className="job-company">
+                    {highlightText(job.company)}
+                  </div>
+
+                  <div className="job-title">
+                    {highlightText(job.jobTitle)}
+                  </div>
+
+                  <div
+                    className={`status-badge ${job.applicationStatus.toLowerCase()}`}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <select
+                      value={job.applicationStatus}
+                      onClick={(e) => e.stopPropagation()}
+                      onChange={(e) => {
+                        e.stopPropagation();
+                        handleStatusChange(job.id, e.target.value);
+                      }}
+                      className="status-dropdown"
+                    >
+                      <option value="Applied">Applied</option>
+                      <option value="Interviewing">Interviewing</option>
+                      <option value="Offer">Offer</option>
+                      <option value="Rejected">Rejected</option>
+                    </select>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </>
       )}
     </div>
   );

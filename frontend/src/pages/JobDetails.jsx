@@ -59,6 +59,21 @@ function JobDetails() {
     navigate("/jobs");
   };
 
+  const toggleFavorite = async () => {
+    const res = await authFetch(`/api/jobs/${id}/favorite`, {
+      method: "PATCH",
+    });
+
+    if (!res.ok) return;
+
+    const updated = await res.json();
+
+    setJob((prev) => ({
+      ...prev,
+      isFavorite: updated.isFavorite,
+    }));
+  };
+
   if (!job) return <div className="page-title">Loading...</div>;
 
   return (
@@ -66,7 +81,15 @@ function JobDetails() {
     <h1 className="page-title">Job Details</h1>
 
     {!editMode ? (
-      <div className="job-card details-card">
+      <div className="job-card details-card" style={{ position: "relative" }}>
+        <div className={`favorite-star details-star ${job.isFavorite ? "favorited" : ""}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            toggleFavorite();
+          }}
+        >
+          ★
+        </div>
         <h2>{job.company}</h2>
 
         <p><strong>Title:</strong> {job.jobTitle}</p>
