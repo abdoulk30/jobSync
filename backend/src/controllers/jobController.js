@@ -98,3 +98,27 @@ exports.getJobById = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch job" });
   }
 };
+
+exports.toggleFavorite = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const job = await prisma.job.findFirst({
+      where: { id, userId: req.userId },
+    });
+
+    if (!job) {
+      return res.status(404).json({ error: "Job not found" });
+    }
+
+    const updated = await prisma.job.update({
+      where: { id },
+      data: { isFavorite: !job.isFavorite },
+    });
+
+    res.json({ isFavorite: updated.isFavorite });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to toggle favorite" });
+  }
+};

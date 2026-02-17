@@ -87,6 +87,7 @@ body {
   border-radius: 14px;
   margin-bottom: 20px;
   transition: 0.2s ease;
+  position: relative;
 }
 
 .job-card:hover {
@@ -809,3 +810,45 @@ button.secondary:hover {
   transform: none;
 }
 
+.favorite-star {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 20px;
+  cursor: pointer;
+  color: #cbd5e1;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.favorite-star:hover {
+  transform: scale(1.2);
+}
+
+.favorite-star.favorited {
+  color: #fbbf24;
+  animation: pop 0.25s ease;
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1); }
+}
+
+.favorite-filter-btn {
+  background: white;
+  border: 1px solid #cbd5e1;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.favorite-filter-btn:hover {
+  background: #f8fafc;
+}
+
+.favorite-filter-btn.active {
+  border-color: #fbbf24;
+  background: #fef3c7;
+}

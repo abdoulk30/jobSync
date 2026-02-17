@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { authFetch } from "../services/api"; // ✅ import this
+import { authFetch } from "../services/api";
 
 function AllJobs() {
   const [jobs, setJobs] = useState([]);
@@ -15,13 +15,13 @@ function AllJobs() {
   }, []);
 
   const fetchJobs = async () => {
-    const res = await authFetch("/api/jobs"); // ✅ changed
+    const res = await authFetch("/api/jobs");
     const data = await res.json();
     setJobs(data);
   };
 
   const handleStatusChange = async (id, newStatus) => {
-    await authFetch(`/api/jobs/${id}`, {  // ✅ changed
+    await authFetch(`/api/jobs/${id}`, {
       method: "PUT",
       body: JSON.stringify({ applicationStatus: newStatus }),
     });
@@ -29,6 +29,22 @@ function AllJobs() {
     setJobs((prevJobs) =>
       prevJobs.map((job) =>
         job.id === id ? { ...job, applicationStatus: newStatus } : job
+      )
+    );
+  };
+
+  const toggleFavorite = async (id) => {
+    const res = await authFetch(`/api/jobs/${id}/favorite`, {
+      method: "PATCH",
+    });
+
+    if (!res.ok) return;
+
+    const updated = await res.json();
+
+    setJobs((prevJobs) =>
+      prevJobs.map((job) =>
+        job.id === id ? { ...job, isFavorite: updated.isFavorite } : job
       )
     );
   };
@@ -168,7 +184,6 @@ function AllJobs() {
         {filteredJobs.length === 1 ? "Job" : "Jobs"} Found
       </div>
 
-      {/* EMPTY STATE */}
       {filteredJobs.length === 0 ? (
         <div className="empty-state">
           <h3>No jobs found</h3>
@@ -184,11 +199,24 @@ function AllJobs() {
               key={job.id}
               className="job-card animate-in"
               onClick={() => navigate(`/jobs/${job.id}`)}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer", position: "relative" }}
             >
+              <div
+                className={`favorite-star ${
+                  job.isFavorite ? "favorited" : ""
+                }`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleFavorite(job.id);
+                }}
+              >
+                ★
+              </div>
+
               <div className="job-company">
                 {highlightText(job.company)}
               </div>
+
               <div className="job-title">
                 {highlightText(job.jobTitle)}
               </div>
