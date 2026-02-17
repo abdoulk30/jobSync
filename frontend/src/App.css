@@ -122,6 +122,7 @@ body {
   color: var(--muted);
   font-weight: 500;
   transition: 0.2s ease;
+  font-size: 18px;
 }
 
 .nav-links a:hover {
@@ -1010,7 +1011,7 @@ button.secondary:hover {
 /* THEME TOGGLE SWITCH */
 
 .theme-toggle {
-  position: fixed;
+  position: absolute;
   top: 20px;
   left: 50%;
   transform: translateX(-50%);

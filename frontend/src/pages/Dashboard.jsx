@@ -8,6 +8,7 @@ function Dashboard() {
     interviewing: 0,
     offer: 0,
     rejected: 0,
+    favorites: 0,
   });
 
   useEffect(() => {
@@ -31,12 +32,17 @@ function Dashboard() {
         (job) => job.applicationStatus === "Rejected"
       ).length;
 
+      const favorites = jobs.filter(
+        (job) => job.isFavorite === true
+      ).length;
+
       setStats({
         total: jobs.length,
         applied,
         interviewing,
         offer,
         rejected,
+        favorites,
       });
     };
 
@@ -71,6 +77,11 @@ function Dashboard() {
         <div className="stat-card">
           <h3>Rejected</h3>
           <p>{stats.rejected}</p>
+        </div>
+
+        <div className="stat-card">
+          <h3>Favorites</h3>
+          <p>{stats.favorites}</p>
         </div>
       </div>
     </div>
