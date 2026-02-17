@@ -15,6 +15,7 @@ function AppContent() {
   const location = useLocation();
 
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
 
   const isAuthPage =
     location.pathname === "/login" || location.pathname === "/register";
@@ -26,11 +27,29 @@ function AppContent() {
   };
 
   useEffect(() => {
+    document.body.className = theme;
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => (prev === "dark" ? "light" : "dark"));
+  };
+
+  useEffect(() => {
     setIsLoggedIn(!!localStorage.getItem("token"));
   }, [location]);
 
   return (
     <div className="app-container">
+      <button
+        className={`theme-toggle ${theme}`}
+        onClick={toggleTheme}
+        aria-label="Toggle Theme"
+      >
+        <div className="toggle-thumb">
+          {theme === "dark" ? "🌙" : "☀️"}
+        </div>
+      </button>
       {/* The navbar now always renders so the Logo is visible */}
       <nav className="navbar">
         <h2 className="logo">JobSync</h2>

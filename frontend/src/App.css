@@ -1,18 +1,68 @@
 :root {
-  --bg: #0f172a;           /* dark slate */
+  /* DARK MODE (default) */
+  --bg: #0f172a;
+  --bg-gradient: linear-gradient(135deg, #0f172a, #1e293b);
+
   --card-bg: #1e293b;
-  --text: #f8fafc;
+  --card-bg-hover: #273449;
+
+  --input-bg: #0f172a;
+  --input-border: #334155;
+
+  --text: #f1f5f9;
   --muted: #94a3b8;
+
   --border: #334155;
+
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+
+  --danger: #ef4444;
+  --danger-hover: #dc2626;
+
+  --warning: #fbbf24;
+  --badge-applied: #475569;
+  --badge-interview: #1e3a8a;
+  --badge-offer: #166534;
+  --badge-rejected: #7f1d1d;
+  --badge-text: #ffffff;
 }
 
 /* Light mode */
+/* Light mode */
 body.light {
-  --bg: #f4f7fb;           /* soft modern blue-gray */
-  --card-bg: #ffffff;
+  --bg: #e2e8f0; /* Darker than #f4f7fb */
+  --bg-gradient: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+
+  --card-bg: #f1f5f9; /* Darker than #ffffff */
+  --card-bg-hover: #e2e8f0;
+
+  --input-bg: #f8fafc;
+  --input-border: #94a3b8;
+
   --text: #0f172a;
   --muted: #475569;
-  --border: #e2e8f0;
+
+  --border: #cbd5e1;
+
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+
+  --danger: #dc2626;
+  --danger-hover: #b91c1c;
+
+  --warning: #f59e0b;
+  --status-applied: #e2e8f0;      /* Light Gray */
+  --status-interview: #dbeafe;    /* Light Blue */
+  --status-offer: #dcfce7;        /* Light Green */
+  --status-rejected: #fee2e2;     /* Light Red */
+  
+  --status-text: #0f172a;
+  --badge-applied: #94a3b8;    
+  --badge-interview: #93c5fd;  
+  --badge-offer: #86efac;      
+  --badge-rejected: #fca5a5;   
+  --badge-text: #0f172a;
 }
 
 * {
@@ -23,9 +73,14 @@ body.light {
 
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  background: linear-gradient(135deg, #0f172a, #1e293b);
+  background: var(--bg-gradient);
+  background-attachment: fixed; 
+  background-repeat: no-repeat;
+  background-size: cover;
+  
   min-height: 100vh;
-  color: #f1f5f9;
+  color: var(--text);
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* Layout */
@@ -35,6 +90,7 @@ body {
   flex-direction: column;
   align-items: center;
   width: 100%;
+  height: auto;
   overflow-x: hidden; /* Prevents weird horizontal shifts */
 }
 
@@ -51,7 +107,7 @@ body {
 .logo {
   font-size: 28px; 
   font-weight: 800; 
-  color: #f1f5f9;
+  color: var(--text);
 }
 
 .nav-links {
@@ -63,13 +119,13 @@ body {
 
 .nav-links a {
   text-decoration: none;
-  color: #cbd5e1;
+  color: var(--muted);
   font-weight: 500;
   transition: 0.2s ease;
 }
 
 .nav-links a:hover {
-  color: #38bdf8;
+  color: var(--primary);
 }
 
 /* Page Container */
@@ -94,22 +150,23 @@ body {
 .section-title {
   font-size: 20px;
   margin-bottom: 20px;
-  color: #94a3b8;
+  color: var(--muted);
 }
 
 /* Job Cards */
 .job-card {
-  background: #1e293b;
+  background: var(--card-bg);
   padding: 20px 25px;
   border-radius: 14px;
   margin-bottom: 20px;
   transition: 0.2s ease;
   position: relative;
+  border: 1px solid var(--border);
 }
 
 .job-card:hover {
   transform: translateY(-3px);
-  background: #273449;
+  background: var(--card-bg-hover);
 }
 
 .job-company {
@@ -119,7 +176,7 @@ body {
 
 .job-title {
   font-size: 14px;
-  color: #94a3b8;
+  color: var(--muted);
   margin-top: 6px;
 }
 
@@ -132,9 +189,9 @@ body {
 .job-form select {
   padding: 10px;
   border-radius: 8px;
-  border: 1px solid #333;
-  background-color: #1e1e1e;
-  color: white;
+  border: 1px solid var(--border);
+  background-color: var(--card-bg);
+  color: var(--text);
 }
 
 .job-form input {
@@ -142,28 +199,28 @@ body {
   padding: 12px 14px;
   border-radius: 10px;
   border: none;
-  background: #334155;
-  color: white;
+  background: var(--border);
+  color: var(--text);
   outline: none;
 }
 
 .job-form input::placeholder {
-  color: #94a3b8;
+  color: var(--muted);
 }
 
 .job-form button {
   padding: 12px 20px;
   border-radius: 10px;
   border: none;
-  background: #38bdf8;
-  color: #0f172a;
+  background: var(--primary);
+  color: var(--bg);
   font-weight: 600;
   cursor: pointer;
   transition: 0.2s ease;
 }
 
 .job-form button:hover {
-  background: #0ea5e9;
+  background: var(--primary-hover);
 }
 
 .controls {
@@ -200,23 +257,23 @@ body {
 .job-form-large select {
   padding: 14px;
   border-radius: 10px;
-  border: 1px solid #333;
-  background-color: #1e1e1e;
-  color: white;
+  border: 1px solid var(--border);
+  background-color: var(--card-bg);
+  color: var(--text);
   font-size: 14px;
 }
 
 .job-form-large input:focus,
 .job-form-large select:focus {
   outline: none;
-  border: 1px solid #646cff;
+  border: 1px solid var(--primary);
 }
 
 .job-form-large button {
   padding: 14px;
   border-radius: 10px;
   border: none;
-  background-color: #646cff;
+  background-color: var(--primary);
   color: white;
   font-weight: bold;
   cursor: pointer;
@@ -224,7 +281,7 @@ body {
 }
 
 .job-form-large button:hover {
-  background-color: #4f5bff;
+  background-color: var(--primary-hover);
 }
 
 /* DASHBOARD */
@@ -241,29 +298,29 @@ body {
 }
 
 .stat-card {
-  background-color: #1e1e1e;
+  background-color: var(--card-bg);
   padding: 25px;
   border-radius: 16px;
   text-align: center;
   transition: 0.2s ease;
-  border: 1px solid #2a2a2a;
+  border: 1px solid var(--border);
 }
 
 .stat-card:hover {
   transform: translateY(-3px);
-  border-color: #646cff;
+  border-color: var(--primary);
 }
 
 .stat-card h3 {
   font-size: 14px;
-  color: #aaa;
+  color: var(--muted);
   margin-bottom: 10px;
 }
 
 .stat-card p {
   font-size: 28px;
   font-weight: bold;
-  color: white;
+  color: var(--text);
 }
 
 .jobs-grid {
@@ -277,9 +334,9 @@ body {
   margin-top: 15px;
   padding: 8px;
   border-radius: 8px;
-  border: 1px solid #333;
-  background-color: #1e1e1e;
-  color: white;
+  border: 1px solid var(--border);
+  background-color: var(--card-bg);
+  color: var(--text);
 }
 
 /* STATUS BADGES */
@@ -298,7 +355,7 @@ body {
 .status-dropdown {
   background: transparent;
   border: none;
-  color: white;
+  color: var(--text);
   font-size: 12px;
   padding: 0;
   margin: 0;
@@ -308,24 +365,29 @@ body {
 
 /* STATUS COLORS */
 
+/* STATUS COLORS - UPDATED TO USE VARS */
 .status-badge.applied {
-  background-color: #3a3a3a;
+  background-color: var(--badge-applied);
+  color: var(--badge-text);
 }
 
 .status-badge.interviewing {
-  background-color: #1e3a8a; /* blue */
+  background-color: var(--badge-interview);
+  color: var(--badge-text);
 }
 
 .status-badge.offer {
-  background-color: #166534; /* green */
+  background-color: var(--badge-offer);
+  color: var(--badge-text);
 }
 
 .status-badge.rejected {
-  background-color: #7f1d1d; /* red */
+  background-color: var(--badge-rejected);
+  color: var(--badge-text);
 }
 
 .job-details-card {
-  background: #1e1e2f;
+  background: var(--card-bg);
   padding: 30px;
   border-radius: 16px;
   max-width: 600px;
@@ -344,7 +406,7 @@ body {
 }
 
 .edit-btn {
-  background: #3b82f6;
+  background: var(--primary);
   border: none;
   padding: 8px 14px;
   border-radius: 8px;
@@ -353,7 +415,7 @@ body {
 }
 
 .delete-btn {
-  background: #ef4444;
+  background: var(--danger);
   border: none;
   padding: 8px 14px;
   border-radius: 8px;
@@ -374,7 +436,7 @@ body {
 }
 
 button.danger {
-  background: #ff4d4d;
+  background: var(--danger);
 }
 
 .details-container {
@@ -382,7 +444,7 @@ button.danger {
   margin: 40px auto;
   padding: 40px;
   border-radius: 14px;
-  border: 1px solid #27272a;
+  border: 1px solid var(--border);
 }
 
 .details-company {
@@ -397,7 +459,7 @@ button.danger {
 }
 
 .details-card a {
-  color: #60a5fa;        /* clean blue */
+  color: var(--primary);
   text-decoration: none; /* remove underline */
   font-weight: 500;
   transition: 0.2s ease;
@@ -409,7 +471,7 @@ button.danger {
 
 .label {
   font-size: 12px;
-  color: #888;
+  color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 1px;
   display: block;
@@ -427,10 +489,10 @@ button.danger {
   width: 100%;
   padding: 10px;
   margin-bottom: 16px;
-  background: #1a1a1a;
-  border: 1px solid #333;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
   border-radius: 6px;
-  color: white;
+  color: var(--text);
 }
 
 /* Base Button Style */
@@ -447,37 +509,37 @@ button.secondary {
 
 /* Primary */
 button.primary {
-  background: #3b82f6;
+  background: var(--primary);
   color: white;
-  border-color: #3b82f6;
+  border-color: var(--primary);
 }
 
 button.primary:hover {
-  background: #2563eb;
+  background: var(--primary-hover);
   transform: translateY(-2px);
 }
 
 /* Danger */
 button.danger {
-  background: #ef4444;
+  background: var(--danger);
   color: white;
-  border-color: #ef4444;
+  border-color: var(--danger);
 }
 
 button.danger:hover {
-  background: #dc2626;
+  background: var(--danger-hover);
   transform: translateY(-2px);
 }
 
 /* Secondary (Back Button) */
 button.secondary {
-  background: white !important;
-  color: #0f172a !important;
-  border-color: #cbd5e1;
+  background: var(--text) !important;
+  color: var(--bg) !important;
+  border-color: var(--muted);
 }
 
 button.secondary:hover {
-  background: #f1f5f9;
+  background: var(--muted);
   transform: translateY(-2px);
 }
 
@@ -494,16 +556,16 @@ button.secondary:hover {
   width: 100%;
   padding: 10px;
   margin-bottom: 16px;
-  background: #0f172a;
-  border: 1px solid #334155;
+  background: var(--input-bg);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  color: white;
+  color: var(--text);
 }
 
 button.secondary {
   background: transparent;
-  border: 1px solid #475569;
-  color: #cbd5e1;
+  border: 1px solid var(--muted);
+  color: var(--text);
   padding: 10px 18px;
   border-radius: 8px;
   cursor: pointer;
@@ -511,8 +573,8 @@ button.secondary {
 }
 
 button.secondary:hover {
-  background: #334155;
-  color: white;
+  background: var(--border);
+  color: var(--text);
 }
 
 .filters {
@@ -524,9 +586,9 @@ button.secondary:hover {
 .filters select {
   padding: 8px 12px;
   border-radius: 8px;
-  background: #1e293b;
-  color: white;
-  border: 1px solid #334155;
+  background: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
 }
 
 /* FILTER CONTAINER */
@@ -541,7 +603,7 @@ button.secondary:hover {
   display: flex;
   gap: 25px;
   flex-wrap: wrap;
-  background: #1e293b;
+  background: var(--card-bg);
   padding: 20px 30px;
   border-radius: 16px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
@@ -557,15 +619,15 @@ button.secondary:hover {
 /* LABEL */
 .filter-group label {
   font-size: 13px;
-  color: #94a3b8;
+  color: var(--muted);
   font-weight: 500;
 }
 
 /* SELECT */
 .filter-group select {
-  background: #0f172a;
-  color: white;
-  border: 1px solid #334155;
+  background: var(--input-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
   padding: 8px 12px;
   border-radius: 8px;
   font-size: 14px;
@@ -575,20 +637,20 @@ button.secondary:hover {
 
 /* HOVER */
 .filter-group select:hover {
-  border-color: #3b82f6;
+  border-color: var(--primary);
 }
 
 /* FOCUS */
 .filter-group select:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: var(--primary);
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
 }
 
 /* Clear Filters Button */
 .clear-btn {
   align-self: flex-end;
-  background: #3b82f6;
+  background: var(--primary);
   color: white;
   border: none;
   padding: 9px 16px;
@@ -599,14 +661,14 @@ button.secondary:hover {
 }
 
 .clear-btn:hover {
-  background: #2563eb;
+  background: var(--primary-hover);
   transform: translateY(-1px);
 }
 
 /* Job Count */
 .job-count {
   margin-bottom: 20px;
-  color: #94a3b8;
+  color: var(--muted);
   font-size: 14px;
   font-weight: 500;
 }
@@ -639,23 +701,23 @@ button.secondary:hover {
   max-width: 500px;
   padding: 10px 14px;
   border-radius: 10px;
-  border: 1px solid #334155;
-  background: #0f172a;
-  color: white;
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  color: var(--text);
   font-size: 14px;
   transition: 0.2s ease;
 }
 
 .search-input:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: var(--primary);
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
 }
 
 /* Highlight text */
 .highlight {
   background: rgba(59, 130, 246, 0.25);
-  color: #60a5fa;
+  color: var(--primary);
   padding: 2px 4px;
   border-radius: 4px;
 }
@@ -664,7 +726,7 @@ button.secondary:hover {
 .empty-state {
   margin-top: 60px;
   text-align: center;
-  background: #1e293b;
+  background: var(--card-bg);
   padding: 40px;
   border-radius: 16px;
   animation: fadeIn 0.3s ease;
@@ -676,7 +738,7 @@ button.secondary:hover {
 
 .empty-state p {
   margin-bottom: 20px;
-  color: #94a3b8;
+  color: var(--muted);
 }
 
 /* AUTH PAGES */
@@ -696,8 +758,8 @@ button.secondary:hover {
   max-width: 800px; 
   padding: 60px 50px; 
   border-radius: 20px;
-  background: #1e293b;
-  border: 1px solid #334155;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
   box-shadow: 0 20px 40px rgba(0,0,0,0.4);
 }
 
@@ -720,8 +782,8 @@ button.secondary:hover {
   padding: 12px;
   border-radius: 8px;
   background: rgba(239, 68, 68, 0.15);
-  border: 1px solid #ef4444;
-  color: #f87171;
+  border: 1px solid var(--danger);
+  color: var(--danger);
   font-size: 14px;
   text-align: center;
 }
@@ -736,7 +798,7 @@ button.secondary:hover {
 
 .auth-group label {
   font-size: 13px;
-  color: #94a3b8;
+  color: var(--muted);
   font-weight: 500;
 }
 
@@ -744,16 +806,16 @@ button.secondary:hover {
   width: 100%; /* Ensures inputs stretch to the new card width */
   padding: 14px 16px;
   border-radius: 10px;
-  border: 1px solid #334155;
-  background: #0f172a;
-  color: white;
+  border: 1px solid var(--border);
+  background: var(--input-bg);
+  color: var(--text);
   font-size: 15px;
   transition: 0.2s ease;
 }
 
 .auth-form input:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: var(--primary);
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
 }
 
@@ -764,7 +826,7 @@ button.secondary:hover {
   padding: 14px;
   border-radius: 10px;
   border: none;
-  background: #3b82f6;
+  background: var(--primary);
   color: white;
   font-weight: 600;
   cursor: pointer;
@@ -772,7 +834,7 @@ button.secondary:hover {
 }
 
 .auth-btn:hover, .auth-form button:hover {
-  background: #2563eb;
+  background: var(--primary-hover);
   transform: translateY(-2px);
 }
 
@@ -780,11 +842,11 @@ button.secondary:hover {
   margin-top: 25px;
   text-align: center;
   font-size: 14px;
-  color: #94a3b8;
+  color: var(--muted);
 }
 
 .auth-footer a {
-  color: #60a5fa;
+  color: var(--primary);
   text-decoration: none;
   font-weight: 500;
 }
@@ -804,7 +866,7 @@ button.secondary:hover {
 
 /* Logout Button */
 .logout-btn {
-  background: #ef4444; 
+  background: var(--danger); 
   border: none;
   color: white;
   padding: 10px 20px; /* Slightly larger button */
@@ -817,7 +879,7 @@ button.secondary:hover {
 }
 
 .logout-btn:hover {
-  background: #dc2626;
+  background: var(--danger-hover);
   transform: translateY(-2px);
 }
 
@@ -833,7 +895,7 @@ button.secondary:hover {
   right: 12px;
   font-size: 20px;
   cursor: pointer;
-  color: #cbd5e1;
+  color: var(--muted);
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
@@ -842,7 +904,7 @@ button.secondary:hover {
 }
 
 .favorite-star.favorited {
-  color: #fbbf24;
+  color: var(--warning);
   animation: pop 0.25s ease;
 }
 
@@ -853,8 +915,8 @@ button.secondary:hover {
 }
 
 .favorite-filter-btn {
-  background: white;
-  border: 1px solid #cbd5e1;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
   padding: 10px 16px;
   border-radius: 6px;
   cursor: pointer;
@@ -862,17 +924,17 @@ button.secondary:hover {
 }
 
 .favorite-filter-btn:hover {
-  background: #f8fafc;
+  background: var(--card-bg-hover);
 }
 
 .favorite-filter-btn.active {
-  border-color: #fbbf24;
-  background: #fef3c7;
+  border-color: var(--warning);
+  background: var(--warning);
 }
 
 .error-state {
-  border: 1px solid #ef4444;
-  background: #fef2f2;
+  border: 1px solid var(--danger);
+  background: var(--bg);
   border-radius: 8px;
   padding: 20px;
 }
@@ -900,7 +962,7 @@ button.secondary:hover {
 
 /* Modal box */
 .modal {
-  background: white;
+  background: var(--card-bg);
   padding: 24px;
   border-radius: 12px;
   width: 400px;
@@ -910,13 +972,13 @@ button.secondary:hover {
 }
 
 .modal h3 {
-  color: #0f172a;   /* dark slate */
+  color: var(--text);   /* dark slate */
   font-weight: 600;
   margin-bottom: 8px;
 }
 
 .modal p {
-  color: #475569;   /* softer gray for description */
+  color: var(--muted);   /* softer gray for description */
 }
 
 .modal-actions {
@@ -942,4 +1004,67 @@ button.secondary:hover {
   top: 16px;
   right: 16px;
   font-size: 24px;
+}
+
+/* THEME TOGGLE BUTTON */
+/* THEME TOGGLE SWITCH */
+
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;
+
+  width: 70px;
+  height: 36px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  padding: 4px;
+
+  transition: background 0.3s ease;
+}
+
+/* Dark mode background */
+.theme-toggle.dark {
+  background: #1e293b;
+}
+
+/* Light mode background */
+.theme-toggle.light {
+  background: #facc15;
+}
+
+/* The sliding circle */
+.toggle-thumb {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 14px;
+
+  transition: transform 0.3s ease;
+}
+
+/* Slide right in light mode */
+.theme-toggle.light .toggle-thumb {
+  transform: translateX(34px);
+}
+
+/* Slide left in dark mode */
+.theme-toggle.dark .toggle-thumb {
+  transform: translateX(0px);
+}
+
+.theme-toggle:hover {
+  background: var(--card-bg-hover);
 }
