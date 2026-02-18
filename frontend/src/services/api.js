@@ -1,7 +1,9 @@
+import { API_BASE_URL } from "../config";
+
 export const authFetch = async (url, options = {}) => {
   const token = localStorage.getItem("token");
 
-  const response = await fetch(`http://localhost:5000${url}`, {
+  const response = await fetch(`${API_BASE_URL}${url}`, {
     ...options,
     headers: {
       "Content-Type": "application/json",
