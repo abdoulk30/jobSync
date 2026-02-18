@@ -973,6 +973,7 @@ button.secondary:hover {
   max-width: 90%;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   animation: popIn 0.2s ease;
+
 }
 
 .modal h3 {
@@ -983,12 +984,14 @@ button.secondary:hover {
 
 .modal p {
   color: var(--muted);   /* softer gray for description */
+  line-height: 1.5;
 }
 
 .modal-actions {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+  margin-top: 12px;
 }
 
 /* Subtle pop animation */
@@ -1233,4 +1236,30 @@ body.light .funnel-metrics {
   position: relative; 
   display: flex;
   justify-content: flex-start; 
+}
+
+.card-delete-btn-fixed {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  background: var(--danger);
+  color: white;
+  border: 1px solid var(--danger);
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s ease;
+  padding: 6px 12px; 
+  font-size: 14px;
+}
+
+.card-delete-btn-fixed:hover {
+  background: var(--danger-hover);
+  border-color: var(--danger-hover);
+  transform: translateY(-2px); /* Subtle lift effect */
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.job-card {
+  position: relative;
 }

@@ -9,6 +9,7 @@ function JobDetails() {
   const [job, setJob] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({});
+  const [showDeleteModal, setShowDeleteModal] = useState(false); // ✅ Added modal state
 
   // Helper function to format date to MM/DD/YYYY
   const formatDateDisplay = (dateString) => {
@@ -64,7 +65,8 @@ function JobDetails() {
     setJob(data);
   };
 
-  const handleDelete = async () => {
+  // ✅ Updated to be called by the modal's "Delete" button
+  const confirmDelete = async () => {
     await authFetch(`/api/jobs/${id}`, {
       method: "DELETE",
     });
@@ -130,7 +132,7 @@ function JobDetails() {
             <button className="primary" onClick={() => setEditMode(true)}>
               Edit
             </button>
-            <button className="danger" onClick={handleDelete}>
+            <button className="danger" onClick={() => setShowDeleteModal(true)}>
               Delete
             </button>
             <button className="secondary" onClick={() => navigate(-1)}>
@@ -226,6 +228,25 @@ function JobDetails() {
             >
               Cancel
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* ✅ CUSTOM DELETE MODAL */}
+      {showDeleteModal && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Permanently delete job?</h3>
+            <p>This action cannot be undone. This job will be removed from your tracker.</p>
+
+            <div className="modal-actions">
+              <button className="secondary" onClick={() => setShowDeleteModal(false)}>
+                Cancel
+              </button>
+              <button className="danger" onClick={confirmDelete}>
+                Delete
+              </button>
+            </div>
           </div>
         </div>
       )}
