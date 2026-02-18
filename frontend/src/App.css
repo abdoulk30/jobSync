@@ -1069,3 +1069,96 @@ button.secondary:hover {
 .theme-toggle:hover {
   background: var(--card-bg-hover);
 }
+
+/* Dashboard Visuals Layout */
+.visuals-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 50px;
+  padding: 0 10px; 
+  max-width: 1300px;
+  margin-left: auto;
+  margin-right: auto;
+  /* Increased gap for more space between doughnut and funnel */
+  gap: 100px; 
+}
+
+.pipeline-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 30px; 
+}
+
+.visual-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 12px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Slimmer Funnel */
+.funnel-container {
+  width: 260px; /* Reduced width */
+}
+
+.funnel-shape {
+  display: flex;
+  flex-direction: column;
+  clip-path: polygon(0% 0%, 100% 0%, 80% 100%, 20% 100%);
+  overflow: hidden;
+}
+
+.funnel-stage {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18%; /* Reduced padding for slimmer look */
+  color: white;
+  font-size: 13px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.f-applied { background: #3b82f6; }
+.f-interview { background: #f59e0b; }
+.f-offer { background: #10b981; border-bottom: none; }
+
+/* Rejection Circle */
+.rejection-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 25px; /* Aligns it visually with the funnel body since label is gone */
+}
+
+.rejected-circle {
+  width: 90px;
+  height: 90px;
+  background: #ef4444;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+}
+
+.rejected-count {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.rejected-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.pie-size-container {
+  width: 360px; 
+  height: 220px;
+}
