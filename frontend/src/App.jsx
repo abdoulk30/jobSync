@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Dashboard from "./pages/Dashboard";
-import AllJobs from "./pages/AllJobs.jsx";
+import AllJobs from "./pages/allJobs";
 import AddJob from "./pages/AddJob";
 import Favorites from "./pages/Favorites";
 import JobDetails from "./pages/JobDetails";
