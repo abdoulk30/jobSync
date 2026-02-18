@@ -39,6 +39,13 @@ function Dashboard() {
     return () => observer.disconnect();
   }, []);
 
+  // Calculation Logic for Analytics
+  const totalApps = stats.total || 0;
+  const responses = stats.interviewing + stats.offer + stats.rejected;
+  const responseRate = totalApps > 0 ? ((responses / totalApps) * 100).toFixed(1) : 0;
+  const rejectionRate = totalApps > 0 ? ((stats.rejected / totalApps) * 100).toFixed(1) : 0;
+  const offerRate = totalApps > 0 ? ((stats.offer / totalApps) * 100).toFixed(1) : 0;
+
   const data = {
     labels: ["Applied", "Interviewing", "Offer", "Rejected"],
     datasets: [{
@@ -53,12 +60,23 @@ function Dashboard() {
       legend: {
         position: "right",
         labels: {
-          color: theme === "dark" ? "#f1f5f9" : "#0f172a",
-          padding: 20,
-          boxWidth: 12,
-          font: { size: 14, weight: '500' },
+          usePointStyle: true,
+          pointStyle: 'rect', 
+          color: theme === "dark" ? "#f1f5f9" : "#0f172a", 
+          padding: 20,   
+          boxWidth: 15,   
+          boxHeight: 15, 
+          font: { 
+            size: 14, 
+            weight: '600' 
+          },
         },
       },
+    },
+    layout: {
+      padding: {
+        left: 10
+      }
     },
     cutout: "60%", 
     maintainAspectRatio: false,
@@ -80,12 +98,13 @@ function Dashboard() {
       <div className="visuals-row">
         {/* LEFT: RING CHART */}
         <div className="chart-wrapper left-align">
+          <h3 className="visual-label">Status Distribution</h3>
           <div className="pie-size-container">
             <Doughnut data={data} options={options} />
           </div>
         </div>
 
-        {/* RIGHT: SLIM FUNNEL + REJECTED CIRCLE */}
+        {/* RIGHT: FUNNEL + ANALYTICS + REJECTED */}
         <div className="chart-wrapper right-align">
           <div className="pipeline-wrapper">
              <div className="funnel-container">
@@ -101,10 +120,25 @@ function Dashboard() {
                     <span>Offers</span><strong>{stats.offer}</strong>
                   </div>
                 </div>
+
+                {/* Analytics Bar Added Below Funnel */}
+                <div className="funnel-metrics">
+                  <div className="metric">
+                    <span className="m-label">Response</span>
+                    <span className="m-value">{responseRate}%</span>
+                  </div>
+                  <div className="metric">
+                    <span className="m-label">Offer Rate</span>
+                    <span className="m-value" style={{ color: "#10b981" }}>{offerRate}%</span>
+                  </div>
+                  <div className="metric">
+                    <span className="m-label">Rejection</span>
+                    <span className="m-value" style={{ color: "#ef4444" }}>{rejectionRate}%</span>
+                  </div>
+                </div>
               </div>
 
               <div className="rejection-zone">
-                {/* Heading removed here */}
                 <div className="rejected-circle">
                    <span className="rejected-count">{stats.rejected}</span>
                    <span className="rejected-label">Rejected</span>

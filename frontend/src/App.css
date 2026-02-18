@@ -1080,7 +1080,6 @@ button.secondary:hover {
   max-width: 1300px;
   margin-left: auto;
   margin-right: auto;
-  /* Increased gap for more space between doughnut and funnel */
   gap: 100px; 
 }
 
@@ -1092,22 +1091,42 @@ button.secondary:hover {
 
 .visual-label {
   font-size: 12px;
-  color: var(--muted);
-  margin-bottom: 12px;
+  color: var(--text); /* This will now flip between #f1f5f9 and #0f172a automatically */
+  margin-bottom: 15px;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
 
-/* Slimmer Funnel */
+.chart-wrapper.left-align {
+  width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  text-align: center;  
+}
+
+/* Update this specific block in your CSS */
+.chart-wrapper.left-align .visual-label {
+  width: 100%;
+  display: block;
+  margin-bottom: 15px;
+  text-align: center;
+  /* ADD THIS LINE: */
+  padding-right: 108px; /* This "pushes" the text left to align with the ring center */
+  box-sizing: border-box;
+}
+
+/* Restored Funnel Shape & Internal Text */
 .funnel-container {
-  width: 260px; /* Reduced width */
+  width: 280px; 
 }
 
 .funnel-shape {
   display: flex;
   flex-direction: column;
-  clip-path: polygon(0% 0%, 100% 0%, 80% 100%, 20% 100%);
+  /* Aggressive slant restored */
+  clip-path: polygon(0% 0%, 100% 0%, 82% 100%, 18% 100%);
   overflow: hidden;
 }
 
@@ -1115,22 +1134,53 @@ button.secondary:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 14px 18%; /* Reduced padding for slimmer look */
   color: white;
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 600;
   border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
-.f-applied { background: #3b82f6; }
-.f-interview { background: #f59e0b; }
-.f-offer { background: #10b981; border-bottom: none; }
+/* Asymmetric padding to keep text clear of the slant */
+.f-applied { background: #3b82f6; padding: 13px 35px; }
+.f-interview { background: #f59e0b; padding: 13px 50px; }
+.f-offer { background: #10b981; padding: 13px 70px; border-bottom: none; }
+
+/* Analytics Bar Added Back */
+.funnel-metrics {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding: 12px;
+  background: rgba(30, 41, 59, 0.6);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.m-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 2.5px;
+}
+
+.m-value {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
 
 /* Rejection Circle */
 .rejection-zone {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 25px; /* Aligns it visually with the funnel body since label is gone */
+  margin-top: -30px; /* Counter-align with the funnel metrics */
 }
 
 .rejected-circle {
@@ -1146,19 +1196,13 @@ button.secondary:hover {
   box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
 }
 
-.rejected-count {
-  font-size: 22px;
-  font-weight: 700;
-}
-
-.rejected-label {
-  font-size: 9px;
-  text-transform: uppercase;
-  font-weight: 600;
-  opacity: 0.9;
-}
+.rejected-count { font-size: 22px; font-weight: 700; }
+.rejected-label { font-size: 9px; text-transform: uppercase; font-weight: 600; opacity: 0.9; }
 
 .pie-size-container {
   width: 360px; 
   height: 220px;
+  position: relative; 
+  display: flex;
+  justify-content: flex-start; 
 }
