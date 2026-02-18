@@ -132,7 +132,7 @@ body {
 /* Page Container */
 .page-content {
   width: 100%;
-  max-width: 900px;
+  max-width: 1000px;
   flex: 1; 
   display: flex;
   flex-direction: column;
@@ -289,6 +289,9 @@ body {
 
 .dashboard-page {
   padding: 40px 20px;
+  width: 950px;
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .stats-grid {
@@ -1071,16 +1074,28 @@ button.secondary:hover {
 }
 
 /* Dashboard Visuals Layout */
+.visuals-container-card {
+  background: rgba(30, 41, 59, 0.4); /* Dark semi-transparent slate */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 40px;
+  margin: 50px auto;
+  width: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8px); /* Optional: gives that modern glassy look */
+}
+
+body.light .visuals-container-card {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
 .visuals-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 50px;
-  padding: 0 10px; 
-  max-width: 1300px;
-  margin-left: auto;
-  margin-right: auto;
-  gap: 100px; 
+  gap: 60px; /* Slightly reduced gap to fit inside the card padding */
 }
 
 .pipeline-wrapper {
@@ -1090,7 +1105,7 @@ button.secondary:hover {
 }
 
 .visual-label {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--text); /* This will now flip between #f1f5f9 and #0f172a automatically */
   margin-bottom: 15px;
   text-align: center;
@@ -1113,7 +1128,7 @@ button.secondary:hover {
   margin-bottom: 15px;
   text-align: center;
   /* ADD THIS LINE: */
-  padding-right: 108px; /* This "pushes" the text left to align with the ring center */
+  padding-right: 120px; /* This "pushes" the text left to align with the ring center */
   box-sizing: border-box;
 }
 
@@ -1151,9 +1166,15 @@ button.secondary:hover {
   justify-content: space-between;
   margin-top: 20px;
   padding: 12px;
-  background: rgba(30, 41, 59, 0.6);
+  background: var(--card-bg); 
   border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  transition: background 0.3s ease, border 0.3s ease;
+}
+
+body.light .funnel-metrics {
+  background: var(--input-bg);
+  border: 1px solid var(--border);
 }
 
 .metric {
@@ -1194,6 +1215,13 @@ button.secondary:hover {
   align-items: center;
   color: white;
   box-shadow: 0 4px 15px rgba(239, 68, 68, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer; 
+}
+
+.rejected-circle:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
 }
 
 .rejected-count { font-size: 22px; font-weight: 700; }

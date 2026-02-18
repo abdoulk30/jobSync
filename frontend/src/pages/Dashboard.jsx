@@ -95,55 +95,57 @@ function Dashboard() {
         <div className="stat-card"><h3>Favorites</h3><p>{stats.favorites}</p></div>
       </div>
 
-      <div className="visuals-row">
-        {/* LEFT: RING CHART */}
-        <div className="chart-wrapper left-align">
-          <h3 className="visual-label">Status Distribution</h3>
-          <div className="pie-size-container">
-            <Doughnut data={data} options={options} />
+      <div className="visuals-container-card">
+        <div className="visuals-row">
+          {/* LEFT: RING CHART */}
+          <div className="chart-wrapper left-align">
+            <h3 className="visual-label">Status Distribution</h3>
+            <div className="pie-size-container">
+              <Doughnut data={data} options={options} />
+            </div>
           </div>
-        </div>
 
-        {/* RIGHT: FUNNEL + ANALYTICS + REJECTED */}
-        <div className="chart-wrapper right-align">
-          <div className="pipeline-wrapper">
-             <div className="funnel-container">
-                <h3 className="visual-label">Application Pipeline</h3>
-                <div className="funnel-shape">
-                  <div className="funnel-stage f-applied">
-                    <span>Applied</span><strong>{stats.applied}</strong>
+          {/* RIGHT: FUNNEL + ANALYTICS + REJECTED */}
+          <div className="chart-wrapper right-align">
+            <div className="pipeline-wrapper">
+              <div className="funnel-container">
+                  <h3 className="visual-label">Application Pipeline</h3>
+                  <div className="funnel-shape">
+                    <div className="funnel-stage f-applied">
+                      <span>Applied</span><strong>{stats.applied}</strong>
+                    </div>
+                    <div className="funnel-stage f-interview">
+                      <span>Interviewing</span><strong>{stats.interviewing}</strong>
+                    </div>
+                    <div className="funnel-stage f-offer">
+                      <span>Offers</span><strong>{stats.offer}</strong>
+                    </div>
                   </div>
-                  <div className="funnel-stage f-interview">
-                    <span>Interviewing</span><strong>{stats.interviewing}</strong>
-                  </div>
-                  <div className="funnel-stage f-offer">
-                    <span>Offers</span><strong>{stats.offer}</strong>
+
+                  {/* Analytics Bar Added Below Funnel */}
+                  <div className="funnel-metrics">
+                    <div className="metric">
+                      <span className="m-label">Response</span>
+                      <span className="m-value">{responseRate}%</span>
+                    </div>
+                    <div className="metric">
+                      <span className="m-label">Offer Rate</span>
+                      <span className="m-value" style={{ color: "#10b981" }}>{offerRate}%</span>
+                    </div>
+                    <div className="metric">
+                      <span className="m-label">Rejection</span>
+                      <span className="m-value" style={{ color: "var(--danger)" }}>{rejectionRate}%</span>
+                    </div>
                   </div>
                 </div>
 
-                {/* Analytics Bar Added Below Funnel */}
-                <div className="funnel-metrics">
-                  <div className="metric">
-                    <span className="m-label">Response</span>
-                    <span className="m-value">{responseRate}%</span>
-                  </div>
-                  <div className="metric">
-                    <span className="m-label">Offer Rate</span>
-                    <span className="m-value" style={{ color: "#10b981" }}>{offerRate}%</span>
-                  </div>
-                  <div className="metric">
-                    <span className="m-label">Rejection</span>
-                    <span className="m-value" style={{ color: "#ef4444" }}>{rejectionRate}%</span>
+                <div className="rejection-zone">
+                  <div className="rejected-circle">
+                    <span className="rejected-count">{stats.rejected}</span>
+                    <span className="rejected-label">Rejected</span>
                   </div>
                 </div>
-              </div>
-
-              <div className="rejection-zone">
-                <div className="rejected-circle">
-                   <span className="rejected-count">{stats.rejected}</span>
-                   <span className="rejected-label">Rejected</span>
-                </div>
-              </div>
+            </div>
           </div>
         </div>
       </div>
